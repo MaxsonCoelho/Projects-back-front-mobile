@@ -1,4 +1,7 @@
+const { startOfDay, endOfDay, startOfWeek, endOfWeek } = require('date-fns');
 const TaskModel = require('../model/TaskModel');
+
+const current = new Date();
 
 class TaskController{
 
@@ -66,6 +69,44 @@ class TaskController{
             .catch(error => {return res.status(500).json(error)});
     }
 
+    async late(req, res) {
+        await TaskModel.find({
+            'when': {'$lt': current}, //filtrar pela menor data atual
+            'macaddress': {'$in': req.body.macaddress}//para saber as minhas tarefas pelo meu endereço mac
+        })
+        .sort('when')
+        .then(response => {
+            return res.status(200).json(response);
+        })
+        .catch(error => { return res.status(500).json(error)});
+    }
+
+    async today(req, res) {
+        await TaskModel.find({
+            'macaddress': {'$in': req.body.macaddress},//busca por dispositivo
+            'when': {'$gte': startOfDay(current), '$lte': endOfDay(current)}//busca por tarefas do começo do dia até o fim do dia
+        })
+        .sort('when')
+        .then(response => {
+            return res.status(200).json(response);
+        })
+        .catch(error => {return res.status(500).json(error)});
+    }
+
+    async week(req, res) {
+        await TaskModel.find({
+            'macaddress': {'$in': req.body.macaddress},//busca por dispositivo
+            'when': {'$gte': startOfWeek(current), '$lte': endOfWeek(current)}//busca por tarefas do começo da semana até o fim da semana
+        })
+        .sort('when')
+        .then(response => {
+            return res.status(200).json(response);
+        })
+        .catch(error => {return res.status(500).json(error)});
+    }
+
 }
+
+
 
 module.exports = new TaskController();
