@@ -1,4 +1,14 @@
-const { startOfDay, endOfDay, startOfWeek, endOfWeek } = require('date-fns');
+const { 
+    startOfDay, 
+    endOfDay, 
+    startOfWeek, 
+    endOfWeek, 
+    startOfMonth, 
+    endOfMonth, 
+    startOfYear, 
+    endOfYear 
+} = require('date-fns');
+
 const TaskModel = require('../model/TaskModel');
 
 const current = new Date();
@@ -25,7 +35,7 @@ class TaskController{
     }
 
     async all(req, res) {
-        await TaskModel.find({macaddress: { '$in': req.body.macaddress }})
+        await TaskModel.find({macaddress: { '$in': req.params.macaddress }})
         .sort('when')//filtra por data e hora
         .then(response => {
             return res.status(200).json(response);
@@ -72,7 +82,7 @@ class TaskController{
     async late(req, res) {
         await TaskModel.find({
             'when': {'$lt': current}, //filtrar pela menor data atual
-            'macaddress': {'$in': req.body.macaddress}//para saber as minhas tarefas pelo meu endereço mac
+            'macaddress': {'$in': req.params.macaddress}//para saber as minhas tarefas pelo meu endereço mac
         })
         .sort('when')
         .then(response => {
@@ -83,7 +93,7 @@ class TaskController{
 
     async today(req, res) {
         await TaskModel.find({
-            'macaddress': {'$in': req.body.macaddress},//busca por dispositivo
+            'macaddress': {'$in': req.params.macaddress},//busca por dispositivo
             'when': {'$gte': startOfDay(current), '$lte': endOfDay(current)}//busca por tarefas do começo do dia até o fim do dia
         })
         .sort('when')
@@ -95,7 +105,7 @@ class TaskController{
 
     async week(req, res) {
         await TaskModel.find({
-            'macaddress': {'$in': req.body.macaddress},//busca por dispositivo
+            'macaddress': {'$in': req.params.macaddress},//busca por dispositivo
             'when': {'$gte': startOfWeek(current), '$lte': endOfWeek(current)}//busca por tarefas do começo da semana até o fim da semana
         })
         .sort('when')
@@ -105,7 +115,32 @@ class TaskController{
         .catch(error => {return res.status(500).json(error)});
     }
 
+    async month(req, res) {
+        await TaskModel.find({
+            'macaddress': {'$in': req.params.macaddress},//busca por dispositivo
+            'when': {'$gte': startOfMonth(current), '$lte': endOfMonth(current)}//busca por tarefas do começo do mês até o fim do mês
+        })
+        .sort('when')
+        .then(response => {
+            return res.status(200).json(response);
+        })
+        .catch(error => {return res.status(500).json(error)});
+    }
+
+    async year(req, res) {
+        await TaskModel.find({
+            'macaddress': {'$in': req.params.macaddress},//busca por dispositivo
+            'when': {'$gte': startOfYear(current), '$lte': endOfYear(current)}//busca por tarefas do começo do mês até o fim do mês
+        })
+        .sort('when')
+        .then(response => {
+            return res.status(200).json(response);
+        })
+        .catch(error => {return res.status(500).json(error)});
+    }
+
 }
+
 
 
 
