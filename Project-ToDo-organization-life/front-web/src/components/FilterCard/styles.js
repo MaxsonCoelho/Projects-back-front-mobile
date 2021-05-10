@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    width: 200px;
+    width: 200%;
     height: 60px;
     background: ${props => props.actived ? '#EE6B26' : '#20295F'};
     padding: 10px;
