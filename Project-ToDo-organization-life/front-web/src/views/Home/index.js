@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import * as S from './styles';
 import FilterCard from '../../components/FilterCard';
 import TaskCard from '../../components/TaskCard';
+import api from '../../services/api';
 
 function Home() {
   const [filterActived, setFilterActived] = useState();
+  const [tasks, setTasks] = useState([]);
+
+  async function loadTask(){
+    await api.get(`/task/filter/${filterActived}/11:11:11:11:11:11`)
+    .then(response => {
+      setTasks(response.data)
+    })
+  }
+
+  useEffect(() => {
+    loadTask();
+  },[filterActived])
 
   return (
     <S.Container>
