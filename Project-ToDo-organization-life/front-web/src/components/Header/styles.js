@@ -30,7 +30,13 @@ export const RightSide = styled.div`
     justify-content: flex-end;
     padding-left: 10px;
 
-    a {
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    a, button {
         color: #FFF;
         font-weight: bold;
         text-decoration: none;
