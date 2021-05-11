@@ -48,17 +48,11 @@ function Home() {
         </S.Title>
 
         <S.Content>
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
+          {
+            tasks.map(t => (
+              <TaskCard type={t.type} title={t.title} when={t.when} />
+            ))
+          }
         </S.Content>
 
         <Footer />

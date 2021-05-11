@@ -11,7 +11,7 @@ export const Container = styled.div`
     justify-content: center;
     flex-direction: column;
 
-    margin: 20px;
+    margin: 60px;
     cursor: pointer;
     transition: all 0.3s ease;
 
