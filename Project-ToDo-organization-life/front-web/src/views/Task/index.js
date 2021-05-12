@@ -75,7 +75,14 @@ function Task({match}) {
         setRedirect(true)
     })
     }
-      
+  }
+
+  async function remove() {
+      const res = window.confirm('Deseja realmente remover a tarefa?')
+      if(res === true){
+        await api.delete(`/task/${match.params.id}`)
+        .then(() => setRedirect(true));
+      }
   }
 
   useEffect(() => {
@@ -130,7 +137,7 @@ function Task({match}) {
                     <input type="checkbox" checked={done} onChange={() => setDone(!done)}/>
                     <span>CONCLUÍDO</span>
                 </div>
-                <button type="button">EXCLUIR</button>
+                {match.params.id && <button onClick={remove} type="button">EXCLUIR</button>}
             </S.Options>
 
             <S.Save>
