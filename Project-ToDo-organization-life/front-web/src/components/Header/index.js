@@ -12,9 +12,9 @@ function Header({ lateCount, clickNotification }) {
             <img src={logo} alt="Logo"/>
         </S.LeftSide>
         <S.RightSide>
-            <a href="#">INÍCIO</a>
+            <Link to="/">INÍCIO</Link>
             <span className="dividir" />
-            <Link>NOVA TAREFA</Link>
+            <Link to="/task">NOVA TAREFA</Link>
             <span className="dividir" />
             <a href="#">SINCRONIZAR CELULAR</a>
             <span className="dividir" />
