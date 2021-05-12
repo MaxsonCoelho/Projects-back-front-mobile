@@ -5,10 +5,12 @@ import * as S from './styles';
 import api from '../../services/api';
 import typeIcons from '../../utils/typeIcons';
 import { format } from 'date-fns';
+import { Redirect } from 'react-router-dom';
 
 
 
 function Task({match}) {
+    const [redirect, setRedirect] = useState(false);
     const [lateCount, setLateCount] = useState();
     const [type, setType] = useState();
     const [id, setId] = useState();
@@ -39,15 +41,29 @@ function Task({match}) {
   }
 
   async function save() {
-      await api.post('/task', {
-          macaddress,
-          type,
-          title,
-          description,
-          when: `${date}T${hour}:00.000`
-      }).then(() => {
-          alert('TAREFA CADASTRADA COM SUCESSO!')
-      })
+      if(match.params.id){
+        await api.put(`/task/${match.params.id}`, {
+            macaddress,
+            done,
+            type,
+            title,
+            description,
+            when: `${date}T${hour}:00.000`
+        }).then(() => {
+            setRedirect(true)
+        })
+      }else {
+        await api.post('/task', {
+            macaddress,
+            type,
+            title,
+            description,
+            when: `${date}T${hour}:00.000`
+        }).then(() => {
+            setRedirect(true)
+        })
+      }
+      
   }
 
   useEffect(() => {
@@ -57,6 +73,7 @@ function Task({match}) {
 
   return (
     <S.Container>
+        { redirect && <Redirect to="/" />}
         <Header lateCount={lateCount} />
         <S.Form>
             <S.TypeIcons>
