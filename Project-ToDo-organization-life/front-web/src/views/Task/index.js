@@ -4,10 +4,11 @@ import Footer from '../../components/Footer';
 import * as S from './styles';
 import api from '../../services/api';
 import typeIcons from '../../utils/typeIcons';
+import { format } from 'date-fns';
 
 
 
-function Task() {
+function Task({match}) {
     const [lateCount, setLateCount] = useState();
     const [type, setType] = useState();
     const [id, setId] = useState();
@@ -26,6 +27,17 @@ function Task() {
     })
   }
 
+  async function LoadTaskDetails() {
+      await api.get(`/task/${match.params.id}`)
+      .then(response => {
+          setType(response.data.type)
+          setTitle(response.data.title)
+          setDescription(response.data.description)
+          setDate(format(new Date(response.data.when), 'yyyy-MM-dd'))
+          setHour(format(new Date(response.data.when), 'HH:mm'))
+      })
+  }
+
   async function save() {
       await api.post('/task', {
           macaddress,
@@ -40,6 +52,7 @@ function Task() {
 
   useEffect(() => {
     lateVerify();
+    LoadTaskDetails();
   },[])
 
   return (

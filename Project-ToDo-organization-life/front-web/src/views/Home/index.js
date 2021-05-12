@@ -5,6 +5,7 @@ import * as S from './styles';
 import FilterCard from '../../components/FilterCard';
 import TaskCard from '../../components/TaskCard';
 import api from '../../services/api';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [filterActived, setFilterActived] = useState();
@@ -63,7 +64,9 @@ function Home() {
         <S.Content>
           {
             tasks.map(t => (
-              <TaskCard type={t.type} title={t.title} when={t.when} />
+              <Link to={`/task/${t._id}`}>
+                <TaskCard type={t.type} title={t.title} when={t.when} />
+              </Link>
             ))
           }
         </S.Content>
